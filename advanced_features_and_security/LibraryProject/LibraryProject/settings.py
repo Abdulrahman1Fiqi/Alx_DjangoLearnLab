@@ -33,6 +33,24 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True  # Ensures CSRF cookie is only sent over HTTPS
 SESSION_COOKIE_SECURE = True  # Ensures session cookie is only sent over HTTPS
 
+SECURE_SSL_REDIRECT = True
+
+# Set HSTS (HTTP Strict Transport Security) settings
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains in HSTS policy
+SECURE_HSTS_PRELOAD = True  # Allow preloading of HSTS
+
+#LibraryProject/settings.py
+
+# Prevent clickjacking by setting the X-Frame-Options header
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from MIME-sniffing a response away from the declared content-type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser's XSS filtering
+SECURE_BROWSER_XSS_FILTER = True
+
 ALLOWED_HOSTS = []
 
 
@@ -140,3 +158,7 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", "https://trustedscripts.example.com")
 CSP_STYLE_SRC = ("'self'", "https://trustedstyles.example.com")
+
+
+
+
