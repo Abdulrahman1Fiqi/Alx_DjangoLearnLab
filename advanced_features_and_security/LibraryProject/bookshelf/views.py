@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book
+from .forms import ExampleForm
 
 
 @permission_required('bookshelf.can_view', raise_exception=True)
@@ -43,3 +44,20 @@ def book_search(request):
     else:
         books = Book.objects.all()
     return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+def example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the data in form.cleaned_data
+            title = form.cleaned_data['title']
+            author = form.cleaned_data['author']
+            published_date = form.cleaned_data['published_date']
+            # Here you can save the data or perform other actions
+            # For example, you might want to create a new Book instance
+            # Book.objects.create(title=title, author=author, published_date=published_date)
+            return redirect('success_url')  # Redirect to a success page
+    else:
+        form = ExampleForm()  # Create a new form instance
+    return render(request, 'bookshelf/example_form.html', {'form': form})
