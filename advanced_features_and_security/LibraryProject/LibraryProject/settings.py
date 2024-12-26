@@ -161,4 +161,4 @@ CSP_STYLE_SRC = ("'self'", "https://trustedstyles.example.com")
 
 
 
-
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
