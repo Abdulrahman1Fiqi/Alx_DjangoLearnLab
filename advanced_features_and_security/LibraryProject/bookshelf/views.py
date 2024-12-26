@@ -33,3 +33,12 @@ def book_delete(request, pk):
     return render(request, 'bookshelf/book_confirm_delete.html', {'book': book})
 
 # Create your views here.
+
+def book_search(request):
+    query = request.GET.get('q')
+    if query:
+        # Use Django's ORM to filter results safely
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
