@@ -1,15 +1,11 @@
-### Step 5: Update the Title of the Created Book
-Update the title of “1984” to “Nineteen Eighty-Four” and save the changes. Document this in `update.md`.
+# Command to update the book title
+book = Book.objects.get(title="1984")
+book.title = "Nineteen Eighty-Four"
+book.save()
 
-#### update.md
-```markdown
-# Update the Book Title
+# Verify the update
+updated_book = Book.objects.get(id=book.id)
+print(updated_book.title)
 
-## Command
-```python
-retrieved_book.title = "Nineteen Eighty-Four"
-retrieved_book.save()
-print(f"Updated Book: {retrieved_book}")
-
-#Updated Book: Book object (1)
-#
+# Expected output:
+# Nineteen Eighty-Four

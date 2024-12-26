@@ -1,15 +1,13 @@
-### Step 4: Retrieve the Book You Created
-Retrieve and display all attributes of the book you just created. Document this in `retrieve.md`.
+# Command to retrieve the created book
+book = Book.objects.get(title="1984")
 
-#### retrieve.md
-```markdown
-# Retrieve the Book
+# Output all attributes of the book
+book_details = {
+    "Title": book.title,
+    "Author": book.author,
+    "Publication Year": book.publication_year
+}
+print(book_details)
 
-## Command
-```python
-retrieved_book = Book.objects.get(id=new_book.id)
-print(f"Retrieved Book: {retrieved_book}")
-print(f"Title: {retrieved_book.title}, Author: {retrieved_book.author}, Published Date: {retrieved_book.published_date}")
-
-#Retrieved Book: Book object (1)
-#Title: 1984, Author: George Orwell, Published Date: 1949-01-01
+# Expected output:
+# {'Title': '1984', 'Author': 'George Orwell', 'Publication Year': 1949}

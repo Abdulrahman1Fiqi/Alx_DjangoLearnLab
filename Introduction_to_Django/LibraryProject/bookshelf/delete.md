@@ -1,17 +1,10 @@
-### Step 6: Delete the Book Instance
-Delete the book instance and confirm the deletion by trying to retrieve all books again. Document this in `delete.md`.
+# Command to delete the book instance
+book = Book.objects.get(title="Nineteen Eighty-Four")
+book.delete()
 
-#### delete.md
-```markdown
-# Delete the Book
+# Confirm deletion
+books = Book.objects.all()
+print(list(books))
 
-## Command
-```python
-retrieved_book.delete()
-print("Book deleted successfully.")
-all_books = Book.objects.all()
-print(f"All Books: {all_books}") 
-
-
-#Book deleted successfully.
-#All Books: <QuerySet []>
+# Expected output:
+# []
