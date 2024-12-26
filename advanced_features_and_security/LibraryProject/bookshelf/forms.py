@@ -1,11 +1,10 @@
 # LibraryProject/bookshelf/forms.py
 from django import forms
-from .models import Book
 
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = ['title', 'author', 'published_date']  # Specify the fields you want in the form
+class ExampleForm(forms.Form):
+    title = forms.CharField(max_length=200, required=True, help_text="Enter the title")
+    author = forms.CharField(max_length=100, required=True, help_text="Enter the author's name")
+    published_date = forms.DateField(required=True, help_text="Enter the published date (YYYY-MM-DD)")
 
     # You can add custom validation methods if needed
     def clean_title(self):
