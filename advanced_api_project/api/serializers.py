@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .models import Author, Book
 
 class BookSerializer(serializers.ModelSerializer):
+    """Serializer for the Book model."""
     class Meta:
         model = Book
         fields = ['title', 'publication_year', 'author']  # Include all fields
@@ -15,6 +16,7 @@ class BookSerializer(serializers.ModelSerializer):
         return value
 
 class AuthorSerializer(serializers.ModelSerializer):
+    """Serializer for the Author model, including nested books."""
     books = BookSerializer(many=True, read_only=True)  # Nested serializer for related books
 
     class Meta:
