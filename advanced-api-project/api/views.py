@@ -11,13 +11,27 @@ class BookListView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read access to everyone, write access to authenticated users
 
-    def perform_create(self, serializer):
-        """Override to add custom behavior when creating a book."""
-        # You can add custom logic here, e.g., logging
-        serializer.save()  # Save the new book instance
-
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     """View to retrieve, update, or delete a book."""
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Same permission as above
+
+# Custom views for Create, Update, and Delete
+class BookCreateView(generics.CreateAPIView):
+    """View to create a new book."""
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class BookUpdateView(generics.UpdateAPIView):
+    """View to update an existing book."""
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class BookDeleteView(generics.DestroyAPIView):
+    """View to delete a book."""
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
