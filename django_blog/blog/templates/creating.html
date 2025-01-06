@@ -1,8 +1,0 @@
-<!-- blog/templates/post_form.html -->
-{% extends 'base.html' %}
-{% block content %}
-<h2>{% if object %}Edit Post{% else %}Create Post{% endif %}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button
