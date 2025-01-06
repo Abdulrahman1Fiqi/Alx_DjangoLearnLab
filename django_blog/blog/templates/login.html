@@ -1,7 +1,6 @@
-{% load static %}
 <!-- blog/templates/registration/login.html -->
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Login{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles.css' %}">
@@ -14,4 +13,5 @@
     <input type="password" name="password" required>
     <button type="submit">Login</button>
 </form>
+<script src="{% static 'script.js' %}"></script> <!-- Load the JavaScript file -->
 {% endblock %}
