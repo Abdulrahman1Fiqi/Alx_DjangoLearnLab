@@ -5,6 +5,8 @@ from .views import post_list , register, user_login, user_logout, profile
 urlpatterns = [
     path('', post_list, name='post_list'),
     path('posts/', post_list, name='post_list'), 
-    path('register/', register, name='register'),
-    path('login/', user_login),
+    path('register/', register, name='register'),  # Registration page
+    path('login/', user_login, name='login'),  # Login page
+    path('logout/', user_logout, name='logout'),  # Logout page
+    path('profile/', profile, name='profile'),
 ]
