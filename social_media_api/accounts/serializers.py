@@ -40,3 +40,8 @@ class LoginSerializer(serializers.Serializer):
         # Create a token for the user if it doesn't exist
         token, created = Token.objects.get_or_create(user=user)
         return token.key  # Return the token key
+    
+
+
+
+get_user_model().objects.create_user
