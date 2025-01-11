@@ -124,3 +124,8 @@ class UnlikePostView(generics.GenericAPIView):
             return Response({"message": "Post unliked."}, status=204)
         except Like.DoesNotExist:
             return Response({"message": "You have not liked this post."}, status=400)
+        
+
+
+
+generics.get_object_or_404(Post, pk=pk)
