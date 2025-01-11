@@ -58,7 +58,24 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 
+from rest_framework import generics, permissions
+from .models import Post
+from .serializers import PostSerializer
+from accounts.models import CustomUser   # Import the CustomUser  model
 
+class FeedView(generics.ListAPIView):
+    """
+    View to retrieve posts from users that the current user follows.
+    """
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Get the users that the current user follows
+        following_users = user.following.all()  # This retrieves the users the current user follows
+        # Filter posts by those followed users
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
 
 
