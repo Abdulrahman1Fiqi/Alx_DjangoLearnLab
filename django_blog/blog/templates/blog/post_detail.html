@@ -1,0 +1,7 @@
+<h1>{{ object.title }}</h1>
+<p>{{ object.content }}</p>
+<p>By {{ object.author }} on {{ object.published_date }}</p>
+{% if user == object.author %}
+    <a href="{{ object.get_update_url }}">Edit</a>
+    <a href="{{ object.get_delete_url }}">Delete</a>
+{% endif %}
