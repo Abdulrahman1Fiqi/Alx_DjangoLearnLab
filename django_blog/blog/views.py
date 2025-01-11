@@ -140,3 +140,20 @@ def search_posts(request):
         ).distinct()
 
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+
+
+
+
+
+from django.shortcuts import render
+from django.db.models import Q  # For complex queries
+from .models import Post
+
+def post_search(request):
+    query = request.GET.get('q', '')  # Get the search query from the GET request
+    posts = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+    ).distinct()  # Filters posts by title, content, or tags
+
+    return render(request, 'blog/post_search.html', {'posts': posts, 'query': query})
