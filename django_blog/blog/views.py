@@ -34,6 +34,8 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-published_date']
 
+    
+
 # View a single post
 class PostDetailView(DetailView):
     model = Post
@@ -119,3 +121,22 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('post-detail', kwargs={'pk': CommentForm.post.id})
+
+
+
+
+
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Post
+
+def search_posts(request):
+    query = request.GET.get('q')
+    posts = Post.objects.all()
+
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+        ).distinct()
+
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
