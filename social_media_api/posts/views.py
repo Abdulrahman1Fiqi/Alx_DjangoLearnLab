@@ -80,3 +80,38 @@ class FeedView(generics.ListAPIView):
 
 
 
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import Post, Like
+from notifications.models import Notification
+
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if created:
+            # Create a notification for the post author
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                target=post
+            )
+            return Response({"message": "Post liked."}, status=201)
+        else:
+            return Response({"message": "You have already liked this post."}, status=400)
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        try:
+            like = Like.objects.get(user=request.user, post=post)
+            like.delete()
+            return Response({"message": "Post unliked."}, status=204)
+        except Like.DoesNotExist:
+            return Response({"message": "You have not liked this post."}, status=400)
