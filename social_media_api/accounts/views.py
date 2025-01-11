@@ -1,39 +1,29 @@
-from rest_framework import serializers
+from rest_framework import generics, status
+from rest_framework.response import Response
 from .models import CustomUser   
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
-from rest_framework.authtoken.models import Token
+from .serializers import UserSerializer, LoginSerializer
 
-class UserSerializer(serializers.ModelSerializer):
+class RegisterView(generics.CreateAPIView):
     """
-    Serializer for user registration and profile management.
+    View for user registration.
     """
-    class Meta:
-        model = CustomUser   
-        fields = ('id', 'username', 'email', 'bio', 'profile_picture', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+    queryset = CustomUser .objects.all()
+    serializer_class = UserSerializer
 
-    def create(self, validated_data):
-        """
-        Create a new user with a hashed password and return the user.
-        """
-        user = get_user_model().objects.create_user(**validated_data)  # Use get_user_model to create user
-        return user
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({'user': serializer.data}, status=status.HTTP_201_CREATED)
 
-class LoginSerializer(serializers.Serializer):
+class LoginView(generics.GenericAPIView):
     """
-    Serializer for user login.
+    View for user login.
     """
-    username = serializers.CharField()
-    password = serializers.CharField()
+    serializer_class = LoginSerializer
 
-    def validate(self, attrs):
-        """
-        Validate the user credentials.
-        """
-        user = authenticate(**attrs)
-        if user is None:
-            raise serializers.ValidationError('Invalid credentials')
-        # Create a token for the user if it doesn't exist
-        token, created = Token.objects.get_or_create(user=user)
-        return token.key  # Return the token key
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = serializer.validated_data  # This will be the token key
+        return Response({'token': token}, status=status.HTTP_200_OK)
