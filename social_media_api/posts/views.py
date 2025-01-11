@@ -2,6 +2,12 @@ from rest_framework import viewsets, permissions
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from django_filters import rest_framework as filters
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import CustomUser 
+from rest_framework import generics, permissions
+from .models import Post
+from .serializers import PostSerializer
 
 class PostFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
@@ -49,3 +55,11 @@ class CommentViewSet(viewsets.ModelViewSet):
         if instance.author != self.request.user:
             raise permissions.PermissionDenied("You do not have permission to delete this comment.")
         instance.delete()
+
+
+
+
+
+
+
+
