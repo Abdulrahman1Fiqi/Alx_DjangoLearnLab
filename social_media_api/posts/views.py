@@ -8,6 +8,11 @@ from .models import CustomUser
 from rest_framework import generics, permissions
 from .models import Post
 from .serializers import PostSerializer
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import Post, Like
+from notifications.models import Notification
 
 class PostFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
@@ -89,7 +94,9 @@ class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        # Retrieve the post or return a 404 error if not found
+        post = get_object_or_404(Post, pk=pk)
+        # Create or get the Like object
         like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if created:
@@ -108,10 +115,12 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        # Retrieve the post or return a 404 error if not found
+        post = get_object_or_404(Post, pk=pk)
         try:
+            # Attempt to retrieve the Like object
             like = Like.objects.get(user=request.user, post=post)
-            like.delete()
+            like.delete()  # Remove the like
             return Response({"message": "Post unliked."}, status=204)
         except Like.DoesNotExist:
             return Response({"message": "You have not liked this post."}, status=400)
